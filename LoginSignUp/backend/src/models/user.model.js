@@ -51,7 +51,7 @@ userSchema.methods.generateAccessToken = function(){
         email: this.email,
         fullname: this.fullname
     }, 
-    process.env.ACCESS_TOKEN_SECRET,
+    process.env.JWT_SECRET,
     {
         expiresIn: '15m'
     }
@@ -62,7 +62,7 @@ userSchema.methods.generateRefreshToken = function(){
     return jwt.sign({
         _id: this._id
     },
-    process.env.REFRESH_TOKEN_SECRET,
+    process.env.JWT_REFRESH_SECRET,
     {
         expiresIn: '7d'
     }

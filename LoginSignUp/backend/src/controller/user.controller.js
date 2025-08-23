@@ -74,13 +74,17 @@ export const RegisterUser = asyncHandler(async (req, res) => {
 export const LoginUser = asyncHandler(async(req , res) => {
     const {username, email, password} = req.body;
 
-    if(!username ||!email || !password) {
-        return res.status(400).json({ message: 'All fields are required' });
+    if(!password || (!username && !email)) {
+        return res.status(400).json({ message: 'Password and either username or email are required' });
     }
+    
     const user = await User.findOne({
-        $or:[{username: username},{email:email}]
-        
+        $or:[
+            {username: username?.toLowerCase()?.trim()},
+            {email: email?.toLowerCase()?.trim()}
+        ]
     });
+    
     if(!user) {
         return res.status(404).json({ message: 'User not found, Kindly Make Id' });
     }
